@@ -110,7 +110,7 @@ def download_point_data(region):
     starttime = UTCDateTime("1975-01-01")
     endtime   = UTCDateTime("2022-01-01")
     
-    cat = client.get_events...
+    #cat = client.get_events...
 
     print ("Point data: {} events in catalogue".format(cat.count()))
     
