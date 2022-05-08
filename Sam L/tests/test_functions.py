@@ -25,44 +25,52 @@ def test_my_coastline_is_cfeature():
     assert type(coast_t) == cfeature.NaturalEarthFeature, "This is not a cartopy feature"
 
 
-# +
-#my_coastline_is_cfeature()
-# -
-
-def test_my_coastline_input_is_string(resolution = "50"):
-
-    assert type(resolution) == str, "a string must be used, use quotations around resolution variable"
+def test_my_coastline_is_coast(name_t = 'coastline'):
+    coast_t = my_coastlines("50m")
+    name_m = coast_t.name
+    assert name_m == name_t, "This is not a cartopy coastline feature"
 
 
-# +
+coast_t = my_coastlines("50m")
+coast_t.scale
+
+
+def test_my_coastline_input_is_string():
+    coast_t = my_coastlines("50m") 
+    assert type(coast_t.scale) == str, "a string must be used, use quotations around resolution variable"
+
+
+test_my_coastline_input_is_string()
 #my_coastline_input_is_string()
-# -
 
-def test_my_coastline_input_resolution(resolution = "50m"):
+def test_my_coastline_input_resolution(resolution = ['10m','50m','110m']):
+    coast_t = my_coastlines("10m")
+    res_s = coast_t.scale 
     res=[]
-    if "50m" in resolution:
+    if "50m" in res_s:
         res.append(1)
-    if "10m" in resolution:
+    if "10m" in res_s:
         res.append(1)
-    if "110m" in resolution:
+    if "110m" in res_s:
         res.append
     assert 1 in res, "must use 10m, 50m, or 110m"
 
 
-# +
-#my_coastline_input_resolution()
-# -
+test_my_coastline_input_resolution()
+
 
 def test_my_coastline_input_m(resolution = "50m"):
+    coast_t = my_coastlines("10m")
+    res_s = coast_t.scale 
+    
     mcheck =[]
-    if 'm' in resolution:
+    if 'm' in res_s:
         mcheck.append(1)
-    assert mcheck == [1], "must use unit of measurement (m)"
+    assert mcheck == [1], "must use variable (m) in input"
 
 
-# +
-#my_coastline_input_m()
-# -
+test_my_coastline_input_m()
+
 
 def test_my_water_feature_islist():
     listw = my_water_features("50m")
