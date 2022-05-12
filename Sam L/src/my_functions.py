@@ -114,11 +114,12 @@ def my_water_features(resolution, lakes=True, rivers=True, ocean=False):
         features.append(cfeature.NaturalEarthFeature('physical', 'lakes', p))
 
     if ocean:
-        features.append(cfeature.NaturalEarthFeature('physical', 'oean', p))
+        features.append(cfeature.NaturalEarthFeature('physical', 'ocean', p))
     return features
 
 
-## need to add documentation for what basemaps generators can be chosen, and what maps in those can be choosen within those
+# +
+
 def my_basemaps():
     """
     Returns a dictionary of map tile generators that cartopy can use. To use this function simply type "my_basemaps()".
@@ -152,6 +153,7 @@ def my_basemaps():
     mapper["stamen_terrain"] = cimgt.StamenTerrain()
 
     return mapper
+# -
 
 
 
@@ -189,13 +191,11 @@ def download_point_data(region, start, end, minmag):
     client = Client("IRIS")
     extent = region
 
-    #t1 = UTCDateTime("1975-01-01")
-    #t2   = UTCDateTime("2022-01-01")
     
     t1 = UTCDateTime(start)
     t2   = UTCDateTime(end)
     
-    #cat = client.get_events...
+    
     cat = client.get_events(starttime=t1, endtime=t2, minmagnitude=minmag, minlatitude=extent[2],
                         maxlatitude=extent[3],minlongitude=extent[0],maxlongitude=extent[1])
     print ("Point data: {} events in catalogue".format(cat.count()))
@@ -210,10 +210,8 @@ def download_point_data(region, start, end, minmag):
         df['Lon [°]'].loc[ii] = cat[ii].origins[0].longitude
         df['Lat [°]'].loc[ii] = cat[ii].origins[0].latitude
         df['mag'].loc[ii] = cat[ii].magnitudes[0].mag
-        #df['event_type'].loc[ii] = cat[ii].event_type
         df['event_type'].loc[ii] = 3
     df1 = df.to_numpy()
-    #df1[:,3] = 1
 
     return df1
 
