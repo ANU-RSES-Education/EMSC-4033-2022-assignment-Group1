@@ -95,7 +95,7 @@ def my_basemaps():
     return mapper
 
 
-## specify some point data (e.g. global seismicity in this case)
+# # specify some point data (e.g. global seismicity in this case)
 
 def download_point_data(region):
     
@@ -132,7 +132,7 @@ def my_point_data(region):
     return data
 
 
-## - Some global raster data (lon, lat, data) global plate age, in this example
+# # - Some global raster data (lon, lat, data) global plate age, in this example
 
 def download_raster_data():
     
