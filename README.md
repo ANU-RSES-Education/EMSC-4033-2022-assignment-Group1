@@ -1,4 +1,8 @@
+
 # The Map Maker Repository
+
+# Group 1 (Sam, Xulu, Gwendolyn)
+Assignment for EMSC-4033/8033, semester 1, 2022
 
 ***Creators*** Sam, Gwendolyn and Xulu
 
@@ -21,3 +25,5 @@ The seismic event notebook helps you to plot on a variety of different basemaps 
 
 
 # xx
+
+
