@@ -8,9 +8,13 @@
 """
 
 
+from .dependencies import *
+
+
 def my_documentation():
 
     markdown_documentation = """   
+
 # Mapping Service with On-Demand Data
 
 Your patience is appreciated with the loading of the final map: load times can vary.
@@ -54,6 +58,7 @@ Source code found in the src folder. Testing functions found in the tests folder
     return markdown_documentation
 
 
+
 def my_coastlines(resolution):
     """ returns the relevant coastlines at the requested resolution, 
     where the resolution must be a string of either '10m', '50m', or '100m' """
@@ -62,9 +67,9 @@ def my_coastlines(resolution):
     
     #import coastlines from cartopy
     return cfeature.NaturalEarthFeature('physical', 'coastline', resolution,
+
                                         edgecolor=(0.0,0.0,0.0),
                                         facecolor="none")
-
 
 def my_water_features(resolution, lakes=True, rivers=True, ocean=True):
     """Returns a [list] of cartopy features including 'rivers', 'lakes', and 'ocean'
@@ -93,10 +98,12 @@ def my_water_features(resolution, lakes=True, rivers=True, ocean=True):
 
     if ocean == True:
         features.append(cfeature.NaturalEarthFeature('physical', 'ocean', resolution))
+
     
     return features
 
 def my_basemaps():
+
     """Returns a dictionary of map tile generators that cartopy can use
         The full list of available interfaces is found in the source code for this one:
         https://github.com/SciTools/cartopy/blob/master/lib/cartopy/io/img_tiles.py
@@ -119,7 +126,6 @@ def my_basemaps():
     return mapper
 
 
-# # specify some point data (e.g. global seismicity in this case)
 
 def download_point_data(region):
     """Returns specified point data formatted into an array of longitude, latitude, and ID code. 
@@ -139,11 +145,10 @@ def download_point_data(region):
     cat = np.array(df["CountyID"])
     con = np.ones(len(df["Longitude"]))
 
-
     point_data = np.column_stack((lon, lat, cat, con))
 
-
     return point_data
+
 
 
 def my_point_data(region):
@@ -153,7 +158,6 @@ def my_point_data(region):
     return data
 
 
-# # - Some global raster data (lon, lat, data) global plate age, in this example
 
 def download_raster_data():
     """Raster data that has been matched and fit to a global lat/lon grid.
@@ -199,10 +203,10 @@ def download_raster_data():
     return raster
 
 
+
 def my_global_raster_data():
 
     raster = download_raster_data()
     
     return raster
-
 
