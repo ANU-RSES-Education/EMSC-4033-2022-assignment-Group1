@@ -123,7 +123,7 @@ def my_basemaps():
 
 def download_point_data(region):
     """Returns specified point data formatted into an array of longitude, latitude, and ID code. 
-            In this instance, harmal algae bloom points in California:
+            In this instance, harmful algae bloom points in California:
                 https://data.ca.gov/dataset/ab672540-aecd-42f1-9b05-9aad326f97ec/resource/c6f760be-b94f-495e-aa91-2d8e6f426e11/download/fhab_bloomreport_portal.csv."""
     
     import pandas as pd
