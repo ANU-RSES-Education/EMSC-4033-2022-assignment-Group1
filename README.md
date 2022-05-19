@@ -4,13 +4,14 @@
 # Group 1 (Sam, Xulu, Gwendolyn)
 Assignment for EMSC-4033/8033, semester 1, 2022
 
+
 ***Creators*** Sam, Gwendolyn and Xulu
 
 ## About this repository
 This repository contains three folders containing different map making functions. These notebooks are:
 - Seismic Event mapping
 - xxx
-- xxx
+- Harmful Algae Blooms v. Biodiversity
 
 The notebooks are easy to use and there is helpful documentation for fucntions called in the notebooks and comments to guide you along.
 
@@ -24,6 +25,6 @@ The seismic event notebook helps you to plot on a variety of different basemaps 
 ## xx
 
 
-# xx
-
+# Harmful Algae Blooms v. Biodiversity
+Two data types have been preloaded and formatted: a point data analysis of harmful algae blooms and raster data of biodiversity functional types provided by CA.gov and Earth Data.
 

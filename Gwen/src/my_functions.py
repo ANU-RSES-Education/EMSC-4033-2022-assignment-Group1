@@ -7,46 +7,52 @@
 
 """
 
+
 from .dependencies import *
+
 
 def my_documentation():
 
     markdown_documentation = """   
-# Haec progressio est tabula faciens
+
+# Mapping Service with On-Demand Data
+
+Your patience is appreciated with the loading of the final map: load times can vary.
     
-## Moderni progressio programmandi 
+## Overview
 
-Moderni programmandi rationem habet organicam, accumsan sentientem, ut mirum inveniat. 
-In hoc cursu discimus quomodo per laminis perlegere discamus quomodo programmata aedificent et 
-quomodo nostra edificent. Incipiamus cum aliquibus praecipuis quaestionibus. 
+This mapping function provides a regional comparison of algae bloom reports and a biodiversity index using
+the Cartopy package as a baseline build. The user can enter a specific region for examination or adjust the given
+inputs by changing the inputs under ```# Specify a region of interest``` <br>
+Note: algae data is only available for California, and the biodiversity ranges over the contiguous USA.
 
-## Quid computatorium ? 
-
-Computatorium classicum est machina alicuius generis ad informationes 
-puras expediendas. Varia elementa opus sunt ad hoc possibilis efficiendum, 
-inter quas aliqua instrumenta initialisendi et recondendi informationes ante 
-et post discursum est, et ma- china ad informationes expediendas (including casus 
-ubi processus pendet ab ipsa informatione). Multae variae machinis his criteriis 
-occurrere possunt, sed plerumque unam saltem exigentiam adiungimus:
-
-## Aequationes mathematicae 
-
-Per "Navier-Stokes" datae sunt
-
-$$
-    \\frac{D \\mathbf{u}}{Dt} -\\nabla \cdot \\eta \\left( \\nabla \mathbf{u} + 
-    \\nabla \mathbf{u}^T \\right) - \\nabla p = \cdots
-$$
+## Features 
+All features are built-in to import from the Cartopy packages, including: Coastlines, Oceans, Rivers, Lakes.
+Each feature requires a resolution input of string values "10m", "50m", or "110m" <br>
+There is also a built-in Base Map that consists of Open Street Maps and QuadtreeTile.
 
 
-## `Python` documentum
+## On-demand data 
 
-Python hic est aliquis codicem quem animum advertere volumus
+Two data types have been preloaded and formatted: a point data analysis of harmful algae blooms and
+raster data of biodiversity functional types. <br>
+Note: To accomodate the overlapping display of both point and raster data, the alpha value has been changed: <br>
+```cf = ax.contourf( ... cmap="RdYlBu",zorder=2, alpha=0.25) ``` <br>
+This can be increased or decreased depending on user preference.
 
-```python
-# The classic "hello world" program
-print("salve mundi !")
-```
+
+## `Python` documentation
+
+Customised docstrings can be called with the help() function for the data and functions in this program, including: <br>
+    my_coastlines <br>
+    my_water_features <br>
+    my_basemaps <br>
+    download_point_data <br>
+    download_raster_data<br>
+    
+Source code found in the src folder. Testing functions found in the tests folder.
+
+
 """
     
     return markdown_documentation
@@ -54,75 +60,95 @@ print("salve mundi !")
 
 
 def my_coastlines(resolution):
-    """ returns the relevant coastlines at the requested resolution """
+    """ returns the relevant coastlines at the requested resolution, 
+    where the resolution must be a string of either '10m', '50m', or '100m' """
 
     import cartopy.feature as cfeature
+    
+    #import coastlines from cartopy
+    return cfeature.NaturalEarthFeature('physical', 'coastline', resolution,
 
-    return cfeature.NaturalEarthFeature('physcical', 'coastline', res,
                                         edgecolor=(0.0,0.0,0.0),
                                         facecolor="none")
 
-
-def my_water_features(resolution, lakes=True, rivers=True, ocean=False):
-    """Returns a [list] of cartopy features"""
+def my_water_features(resolution, lakes=True, rivers=True, ocean=True):
+    """Returns a [list] of cartopy features including 'rivers', 'lakes', and 'ocean'
+    which must be called as (resolution, feature=True)
+    where resolution is a string of values '10m', '50m' or '110m
     
+    Features are as follows:
+     	Ocean – Ocean polygon split into contiguous pieces.
+        Lakes – Automatically scaled natural and artificial lakes.
+        Rivers - Automatically scaled single-line drainages, including lake centerlines.
+    As desinged by Natural Earth Data at https://www.naturalearthdata.com/features/ and integrated
+    using the Cartopy package: https://scitools.org.uk/cartopy/docs/latest/index.html'"""
+    
+    import cartopy.feature as cfeature
+    
+    #construct the list
     features = []
     
-    if rivers:
-        features.append(something)
+    #define each feature when called
+    if rivers == True:
+        features.append(cfeature.NaturalEarthFeature(scale=resolution, category='physical',
+    name='rivers_lake_centerlines', facecolor='none'))
         
-    if lakes:
-        features.append(somethingelse)
+    if lakes == True:
+        features.append(cfeature.NaturalEarthFeature('physical', 'lakes', resolution))
 
-    if ocean:
-        features.append(somethingelse)
+    if ocean == True:
+        features.append(cfeature.NaturalEarthFeature('physical', 'ocean', resolution))
+
     
     return features
 
 def my_basemaps():
-    """Returns a dictionary of map tile generators that cartopy can use"""
-    
-    ## The full list of available interfaces is found in the source code for this one:
-    ## https://github.com/SciTools/cartopy/blob/master/lib/cartopy/io/img_tiles.py
 
-    # dictionary of possible basemap tile objects
+    """Returns a dictionary of map tile generators that cartopy can use
+        The full list of available interfaces is found in the source code for this one:
+        https://github.com/SciTools/cartopy/blob/master/lib/cartopy/io/img_tiles.py
+    Currently selected maps are:
+        Open Street Map from https://www.openstreetmap.org/#map=4/-28.15/133.28
+        QuadtreeTiles which is defined by Cartopy as:
+            Implement web tile retrieval using the Microsoft WTS quadkey coordinate system.
+            A “tile” in this class refers to a quadkey such as “1”, “14” or “141” 
+            where the length of the quatree is the zoom level in Google Tile terms."""
     
+    import cartopy.io.img_tiles as cimgt 
+    
+    #construct the list
     mapper = {}
     
-    ## Open Street map
+    #import Open Street Map and QuadtreeTiles
     mapper["open_street_map"] = cimgt.OSM()
+    mapper["mapbox_outdoors"] = cimgt.QuadtreeTiles()
 
     return mapper
 
 
-## specify some point data (e.g. global seismicity in this case)
 
 def download_point_data(region):
+    """Returns specified point data formatted into an array of longitude, latitude, and ID code. 
+            In this instance, harmful algae bloom points in California:
+                https://data.ca.gov/dataset/ab672540-aecd-42f1-9b05-9aad326f97ec/resource/c6f760be-b94f-495e-aa91-2d8e6f426e11/download/fhab_bloomreport_portal.csv."""
     
-    from obspy.core import event
-    from obspy.clients.fdsn import Client
-    from obspy import UTCDateTime
-
-    client = Client("IRIS")
-
-    extent = region
-
-    starttime = UTCDateTime("1975-01-01")
-    endtime   = UTCDateTime("2022-01-01")
+    import pandas as pd
+    import numpy as np
     
-    cat = client.get_events...
-
-    print ("Point data: {} events in catalogue".format(cat.count()))
+    #import data and create dataframe
+    algae  = pd.read_csv('src/fhab_bloomreport_portal.csv')
+    df = pd.DataFrame(algae)
     
-    # Unpack the obspy data into a plottable array
+    #align data into lat, lon, category
+    lon = np.array(df["Longitude"])
+    lat = np.array(df["Latitude"])
+    cat = np.array(df["CountyID"])
+    con = np.ones(len(df["Longitude"]))
 
-    event_count = cat.count()
+    point_data = np.column_stack((lon, lat, cat, con))
 
-    eq_origins = np.zeros((event_count, 4))
+    return point_data
 
-    some_code
-
-    return eq_origins
 
 
 def my_point_data(region):
@@ -132,29 +158,50 @@ def my_point_data(region):
     return data
 
 
-## - Some global raster data (lon, lat, data) global plate age, in this example
 
 def download_raster_data():
+    """Raster data that has been matched and fit to a global lat/lon grid.
     
-    # Seafloor age data and global image - data from Earthbyters
+    This dataset provides maps of the distribution of ecosystem functional types (EFTs) and the interannual variability of EFTs at 
+        0.05 degree resolution across the conterminous United States (CONUS) for 2001 to 2014. EFTs are groupings of ecosystems based on 
+        their similar ecosystem functioning that are used to represent the spatial patterns and temporal variability of key ecosystem 
+        functional traits without prior knowledge of vegetation type or canopy architecture. Sixty-four EFTs were derived from the metrics 
+        of a 2001-2014 time-series of satellite images of the Enhanced Vegetation Index (EVI) from the Moderate Resolution Imaging Spectroradiometer (MODIS) 
+        product MOD13C2. EFT diversity was calculated as the modal (most repeated) EFT and interannual variability was calculated as the number of unique EFTs for each pixel.
 
-    # The data come as ascii lon / lat / age tuples with NaN for no data. 
-    # This can be loaded with ...
+                https://daac.ornl.gov/cgi-bin/dsviewer.pl?ds_id=1659
+    
+    """
+    
+    import cartopy.io.shapereader as shpreader
+    import json
+    import numpy as np
+    from osgeo import gdal
+    
+    #import data and enter into array
+    ds = gdal.Open('src/ecosystem_functional_types_diversity.tif')
+    band = ds.GetRasterBand(1)
+    arr = band.ReadAsArray()
+    
+    #size to match the latitude and longitude of the data
+    datasize = (494, 1153, 3)
+    raster = np.empty(datasize)
+    
+    #fit the data into a lat/lon array
+    #using the data's range to set the space alignment
+    lats = np.linspace(49.36, 24.55, datasize[0])
+    lons = np.linspace(-124.77, -67.0, datasize[1])
+    
+    arrlons,arrlats = np.meshgrid(lons, lats)
 
-    # age = numpy.loadtxt("Resources/global_age_data.3.6.xyz")
-    # age_data = age.reshape(1801,3601,3)  # I looked at the data and figured out what numbers to use
-    # age_img  = age_data[:,:,2]
+    raster[...,0] = arrlons[...]
+    raster[...,1] = arrlats[...]
+    raster[...,2] = arr[...]
 
-    # But this is super slow, so I have just stored the Age data on the grid (1801 x 3601) which we can reconstruct easily
 
-    from cloudstor import cloudstor
-    teaching_data = cloudstor(url="L93TxcmtLQzcfbk", password='')
-    teaching_data.download_file_if_distinct("global_age_data.3.6.z.npz", "global_age_data.3.6.z.npz")
 
-    datasize = (1801, 3601, 3)
-    raster_data = np.empty(datasize)
+    return raster
 
-    return raster_data
 
 
 def my_global_raster_data():
@@ -162,3 +209,4 @@ def my_global_raster_data():
     raster = download_raster_data()
     
     return raster
+
