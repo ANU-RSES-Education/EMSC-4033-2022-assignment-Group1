@@ -19,13 +19,19 @@ The user needs to specify the region, resolution and basemap of interest as inpu
 
 In general, the functions in this module is organised based on different types of features to be put on the map. 
 
-It includes: 
+## The features are: 
 
 1) geographical features: my_coastlines and my_water_features that take requested resolution as a parameter to generate map features. 
 
 2) graphical features: my_basemaps, download_raster_data, and my_global_raster_data output corresponding map graphics. 
 
 3) point features: download_point_data and my_point_data output the regional seismicity as point-like representation on the map. 
+
+## Data: 
+
+1) Point data (seismicity): downloaded from IRIS FDSN network (http://www.fdsn.org/services/)
+
+2) Raster data (seafloor age data): downloaded from cloudstor "global_age_data.3.6.z.npz".
 
 """
     
@@ -47,8 +53,6 @@ def my_coastlines(resolution):
     """
 
     import cartopy.feature as cfeature
-    #ax = plt.axes(projection=ccrs.PlateCarree()) 
-    #ax.set_extent(map_extent)
     coastline_feature = cfeature.NaturalEarthFeature('physical', 'coastline',
                                            resolution,  
                                            edgecolor=(0.0,0.0,0.0),
@@ -93,6 +97,7 @@ def my_water_features(resolution, lakes=True, rivers=True, ocean=False):
 
 def my_basemaps():
     """Create a dictionary of map tile generators for later use.
+       The user can check the cartopy documentation of image tiles (https://scitools.org.uk/cartopy/docs/v0.16/cartopy/io/img_tiles.html). 
     
        Parameters: 
        None
@@ -125,6 +130,7 @@ def my_basemaps():
 
 def download_point_data(region):
     """Create a numpy array that contains the geographical and depth information of seismicity in the selected region.
+       The user can check the documentation of obspy (https://docs.obspy.org/) for the usage of the functions. 
     
        Parameters: 
        
@@ -137,7 +143,7 @@ def download_point_data(region):
        2nd column: latitude
        3rd column: depth
        4th column: size of the circles representing seismic events
-    
+       
     """
     
     from obspy.core import event
@@ -266,12 +272,12 @@ def download_raster_data():
     raster_data = np.empty(datasize)
     
     age = np.load ("global_age_data.3.6.z.npz")["ageData"]
-    lats_extent = np.linspace(-90,90,1801)
+    lats_extent = np.linspace(90,-90,1801)
     lons_extent = np.linspace(-180,180, 3601)
     llX, llY = np.meshgrid(lons_extent, lats_extent)
-    raster_data[:,:,0] = llX [:, :]
-    raster_data[:,:,1] = llY [:, :]
-    raster_data[:,:,2] = age [:, :]
+    raster_data[...,0] = llX [...]
+    raster_data[...,1] = llY [...]
+    raster_data[...,2] = age [...]
     
     return raster_data
 
